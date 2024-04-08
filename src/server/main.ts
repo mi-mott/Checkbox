@@ -1,11 +1,14 @@
 import express from 'express';
 import ViteExpress from 'vite-express';
+import pg from 'pg';
+import { fetchTaskApi } from './fetchApi.js';
 
 const app = express();
 
-// TODO: Example route, please delete this when you implement your own routes
-app.get('/hello', (_, res) => {
-  res.json({ result: 'Hello there!' });
+// For fetching the tasks with no parameters
+app.get('/fetchTasks', async (_, res) => {
+  const tasks = await fetchTaskApi();
+  res.json({ results: tasks })
 });
 
 ViteExpress.config({
