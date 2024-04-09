@@ -85,7 +85,9 @@ export default function AsyncTaskSearchBar() {
           }}
           onInputChange={async (e) => {
             setLoading(true);
-            await debounced(e.target?.value || "");
+            const target = e.target as HTMLInputElement;
+            const value = target.value;
+            await debounced(value);
           }}
         />
       </FormControl>
