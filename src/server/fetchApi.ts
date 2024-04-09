@@ -1,27 +1,65 @@
-import pg from 'pg';
+import { Dayjs } from "dayjs";
 
-const getNewClient = () => {
-    const { Client } = pg
-    const client = new Client({ 
-        host: 'database',
-        port: Number(process.env.POSTGRES_PORT),
-        database: process.env.POSTGRES_DB,
-        user: process.env.POSTGRES_USER,
-        password: process.env.POSTGRES_PASSWORD,
+export const completeTask = async (taskId: number) => {
+    const response = await fetch("/deleteTask", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        taskId: taskId,
+      }),
     });
-    return client;
+
+    return response;
+  };
+
+interface NewTaskType {
+    taskName: string;
+    taskDesc: string;
+    dueDate: Dayjs
 }
 
-export const fetchTaskApi = async () => {
-    const client = getNewClient();
+export const newTask = async (taskName: string, taskDesc: string, dueDate: Dayjs) => {
+    const response = await fetch("/newTask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          taskName: taskName,
+          taskDesc: taskDesc,
+          dueDate: dueDate,
+        }),
+      });
 
-    try {
-        await client.connect();
-        const queryResult = await client.query('SELECT * FROM tasks');
-        return queryResult.rows
-    } catch (error) {
-        console.error('Error executing query:', error);
-    } finally {
-        await client.end();
-    }
+    return response
+}
+
+export const editTask = async (taskName: string, taskDesc: string, dueDate: Dayjs, taskId: number) => {
+  const response = await fetch("/updateTask", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        taskName: taskName,
+        taskDesc: taskDesc,
+        dueDate: dueDate,
+        taskId: taskId,
+      }),
+    });
+
+  return response
+}
+
+export const fetchByTaskName = async (taskName: string) => {
+  const response = await fetch(`/fetchByTaskName?taskName=${taskName}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+
+  return response
 }
