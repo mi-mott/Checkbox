@@ -14,12 +14,6 @@ export const completeTask = async (taskId: number) => {
     return response;
   };
 
-interface NewTaskType {
-    taskName: string;
-    taskDesc: string;
-    dueDate: Dayjs
-}
-
 export const newTask = async (taskName: string, taskDesc: string, dueDate: Dayjs) => {
     const response = await fetch("/newTask", {
         method: "POST",
