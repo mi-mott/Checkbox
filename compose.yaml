@@ -6,6 +6,10 @@ services:
       context: .
     environment:
       NODE_ENV: production
+      POSTGRES_DB: ${DB_POSTGRES_DATABASE}
+      POSTGRES_USER: ${DB_POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${DB_POSTGRES_PASSWORD}
+      POSTGRES_PORT: ${DB_POSTGRES_PORT}
     ports:
       - 3000:3000
     depends_on:
